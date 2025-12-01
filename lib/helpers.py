@@ -57,7 +57,6 @@ def seed_database():
         ("Murder on the Orient Express", "978-0062693662", 1934, authors[3].id, genres[2].id, 4.4, 274),
         ("Foundation", "978-0553293357", 1951, authors[4].id, genres[1].id, 4.5, 255),
         ("Pride and Prejudice", "978-0141439518", 1813, authors[5].id, genres[3].id, 4.7, 432)
-        
     ]
     
     for title, isbn, year, author_id, genre_id, rating, pages in books_data:
