@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, create_engine
 from sqlalchemy.orm import relationship
-from . import Base  # FIXED: Use relative import
+from . import Base  
 
 class Author(Base):
     __tablename__ = 'authors'
@@ -18,7 +18,7 @@ class Author(Base):
     @classmethod
     def create_author(cls, name, nationality):
         """Create a new author"""
-        from . import session  # FIXED: Import session locally
+        from . import session  
         author = cls(name=name, nationality=nationality)
         session.add(author)
         session.commit()
