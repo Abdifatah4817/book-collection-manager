@@ -1,5 +1,6 @@
 from sqlalchemy import Column, Integer, String, Float, ForeignKey
 from sqlalchemy.orm import relationship
+from datetime import datetime  # ADD THIS IMPORT
 from . import Base  # FIXED: Use relative import
 
 class Book(Base):
@@ -94,10 +95,17 @@ class Book(Base):
     
     @property
     def reading_time(self):
-        """Estimate reading time (assuming 200 words per minute, 250 words per page)"""
+        """Estimate reading time in hours (assuming 200 words per minute, 250 words per page)"""
         if self.pages:
             words = self.pages * 250
             minutes = words / 200
             hours = minutes / 60
-            return f"{hours:.1f} hours"
-        return "Unknown"
+            return round(hours, 1)  # CHANGED: Return number instead of string
+        return 0
+    
+    @property
+    def age(self):
+        """Calculate book age in years"""
+        if self.publication_year:
+            return datetime.now().year - self.publication_year
+        return 0

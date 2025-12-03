@@ -22,6 +22,22 @@ The application uses SQLite database with three main tables:
 - **One-to-Many**: Genre → Books (one genre can have many books)
 
 ## Installation
+## ✅ Verified Features & Testing Results
+
+### Database Operations:
+- ✅ **CRUD Operations**: Full Create, Read, Update, Delete for all entities
+- ✅ **Relationships Verified**: One-to-many relationships working correctly
+- ✅ **Data Integrity**: Unique constraints and foreign keys enforced
+
+### Calculated Properties:
+- ✅ **Reading Time**: Automatically calculated based on page count
+- ✅ **Book Age**: Calculated from publication year to current year
+- ✅ **Statistics**: Collection totals, averages, and summaries
+
+### User Experience:
+- ✅ **Input Validation**: Year, rating, and pages validated
+- ✅ **Error Handling**: Graceful error recovery and user feedback
+- ✅ **Search Functionality**: Cross-table search by title, author, or genre
 
 1. Clone the repository:
 ```bash

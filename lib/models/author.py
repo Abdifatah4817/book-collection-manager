@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, create_engine
+from sqlalchemy import Column, Integer, String, Text
 from sqlalchemy.orm import relationship
 from . import Base  
 
@@ -6,20 +6,27 @@ class Author(Base):
     __tablename__ = 'authors'
     
     id = Column(Integer, primary_key=True)
-    name = Column(String)
+    name = Column(String, nullable=False)
     nationality = Column(String)
+    biography = Column(Text)  # Added this field
     
     # One-to-many relationship with books
-    books = relationship("Book", back_populates="author")
+    books = relationship("Book", back_populates="author", cascade="all, delete-orphan")
     
     def __repr__(self):
         return f"<Author(id={self.id}, name='{self.name}', nationality='{self.nationality}')>"
     
     @classmethod
-    def create_author(cls, name, nationality):
-        """Create a new author"""
-        from . import session  
-        author = cls(name=name, nationality=nationality)
+    def create_author(cls, name, nationality="", biography=""):
+        """Create a new author if not exists"""
+        from . import session
+        
+        # Check if author already exists (case-insensitive)
+        existing = session.query(cls).filter(cls.name.ilike(name)).first()
+        if existing:
+            return existing  # Return existing author instead of creating new
+        
+        author = cls(name=name, nationality=nationality, biography=biography)
         session.add(author)
         session.commit()
         return author
@@ -38,7 +45,7 @@ class Author(Base):
     
     @classmethod
     def find_by_name(cls, name):
-        """Find author by name"""
+        """Find author by name (partial match, case-insensitive)"""
         from . import session
         return session.query(cls).filter(cls.name.ilike(f"%{name}%")).all()
     
@@ -61,3 +68,8 @@ class Author(Base):
     def get_books(self):
         """Get all books by this author"""
         return self.books
+    
+    @property
+    def book_titles(self):
+        """Return list of book titles by this author"""
+        return [book.title for book in self.books]
